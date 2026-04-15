@@ -1,13 +1,14 @@
 <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-xl p-6 max-w-xs w-full text-center shadow-xl animate-[bounce_0.5s_ease-out]">
-        <div class="text-5xl mb-4">🎉</div>
-        <h2 class="text-3xl font-bold text-amber-500 mb-2">BINGO!</h2>
-        <p class="text-gray-600 mb-6">You completed a line!</p>
+    <div class="relative max-w-sm w-full animate-[bounce_0.5s_ease-out]" style="border-radius: 2rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(10,50,90,0.92); padding: 1.5rem; text-align: center; box-shadow: 0 30px 90px rgba(0,0,0,0.45);">
+        <div class="mb-4" style="font-size: 4rem;">🐟🏆</div>
+        <h2 class="text-4xl font-bold" style="color:#ffcf71; margin-bottom:0.5rem;">Big Catch!</h2>
+        <p style="color: rgba(244,242,236,0.78); margin-bottom:1.5rem;">You landed a winning row and scored a trophy-worthy haul.</p>
 
         <button
             @onclick="OnDismiss"
-            class="w-full bg-accent text-white font-semibold py-3 px-6 rounded-lg active:bg-accent-light transition-colors">
-            Keep Playing
+            class="fancy-button"
+            style="width:100%; background: linear-gradient(135deg, #ffb347 0%, #ff9e3d 100%); color: #082130;">
+            Keep Fishing
         </button>
     </div>
 </div>

@@ -6,10 +6,11 @@
     class="@GetCssClasses()"
     aria-pressed="@Square.IsMarked"
     aria-label="@(Square.IsFreeSpace ? "Free space" : Square.Text)">
-    <span class="wrap-break-word hyphens-auto">@Square.Text</span>
+    <span class="fish-icon">@GetFishEmoji()</span>
+    <span class="square-label">@Square.Text</span>
     @if (Square.IsMarked && !Square.IsFreeSpace)
     {
-        <span class="absolute top-0.5 right-0.5 text-green-600 text-xs">✓</span>
+        <span class="absolute top-0.5 right-0.5 text-[#ffb347] text-xs">✓</span>
     }
 </button>
 
@@ -25,16 +26,37 @@
 
     private string GetCssClasses()
     {
-        var baseClasses = "relative flex items-center justify-center p-1 text-center border border-gray-300 rounded transition-all duration-150 select-none min-h-[60px] text-xs leading-tight";
+        var baseClasses = "square-card transition-all duration-150 select-none";
 
         var stateClasses = Square.IsMarked
             ? IsWinning
-                ? "bg-amber-200 border-amber-400 text-amber-900"
-                : "bg-marked border-marked-border text-green-800"
-            : "bg-white text-gray-700 active:bg-gray-100";
+                ? "marked win"
+                : "marked"
+            : string.Empty;
 
-        var freeSpaceClasses = Square.IsFreeSpace ? "font-bold text-sm" : "";
+        var freeSpaceClasses = Square.IsFreeSpace ? "anchor-label" : string.Empty;
 
-        return $"{baseClasses} {stateClasses} {freeSpaceClasses}";
+        return $"{baseClasses} {stateClasses} {freeSpaceClasses}".Trim();
+    }
+
+    private string GetFishEmoji()
+    {
+        if (Square.IsFreeSpace)
+        {
+            return "⚓";
+        }
+
+        var shape = Square.Id % 7;
+        switch (shape)
+        {
+            case 0: return "🐠";
+            case 1: return "🐟";
+            case 2: return "🐡";
+            case 3: return "🐬";
+            case 4: return "🦀";
+            case 5: return "🦑";
+            case 6: return "🐙";
+            default: return "🐟";
+        }
     }
 }

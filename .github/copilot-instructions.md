@@ -31,3 +31,9 @@ Design and conventions:
 - Preserve the existing Blazor structure and static Pages deployment model
 - Use `.github/instructions/frontend-design.instructions.md` and `.github/instructions/css-utilities.instructions.md` for UI guidance
 - Keep component logic in `SocOps/Components/` and page routing in `SocOps/Pages/`
+
+Design guide:
+- Favor immersive themes and distinctive visual character over generic UI layouts
+- Prefer CSS-driven motion and atmosphere instead of adding external image assets when possible
+- Keep color, typography, and spacing consistent using the project’s utility classes and the shared `app.css`
+- When redesigning pages, ensure the interface remains accessible and the core Blazor navigation flow stays intact

@@ -1,26 +1,223 @@
-<div class="flex flex-col items-center justify-center min-h-full p-6 bg-gray-50">
-    <div class="text-center max-w-sm">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Soc Ops</h1>
-        <p class="text-lg text-gray-600 mb-8">Social Bingo</p>
+@using System.Timers
+@inject BingoGameService GameService
 
-        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
-            <h2 class="font-semibold text-gray-800 mb-3">How to play</h2>
-            <ul class="text-left text-gray-600 text-sm space-y-2">
-                <li>• Find people who match the questions</li>
-                <li>• Tap a square when you find a match</li>
-                <li>• Get 5 in a row to win!</li>
-            </ul>
+<div class="landing-page">
+    <!-- Animated ocean background -->
+    <div class="ocean-bg">
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+    </div>
+
+    <!-- Floating elements -->
+    <div class="floating-elements">
+        <div class="fish-school">
+            <div class="fish fish-1">🐠</div>
+            <div class="fish fish-2">🐟</div>
+            <div class="fish fish-3">🦈</div>
         </div>
+        <div class="bubbles">
+            <div class="bubble bubble-lg"></div>
+            <div class="bubble bubble-md"></div>
+            <div class="bubble bubble-sm"></div>
+        </div>
+    </div>
 
-        <button
-            @onclick="OnStart"
-            class="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors">
-            Start Game
-        </button>
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="brand-mark">
+                    <span class="brand-text">SOC OPS</span>
+                    <div class="brand-accent"></div>
+                </div>
+                <h1 class="main-title">
+                    <span class="title-line">Catch a</span>
+                    <span class="title-line highlight">Bingo Fleet</span>
+                </h1>
+                <p class="hero-description">
+                    Drop anchor in team conversations. Reel in colleagues who match the catch notes.
+                    Land five in a row and claim your trophy haul.
+                </p>
+                <div class="hero-meta">
+                    <span class="meta-item">⏱️ 2-3 minutes</span>
+                    <span class="meta-item">👥 4-20 players</span>
+                    <span class="meta-item">🎯 No prep needed</span>
+                </div>
+                <button @onclick="OnStart" class="cta-button">
+                    <span class="button-text">Cast Off</span>
+                    <span class="button-icon">🎣</span>
+                    <div class="button-ripple"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Game Preview Section -->
+        <section class="preview-section">
+            <h2 class="section-title">See How It Works</h2>
+            <div class="preview-board">
+                <div class="board-grid">
+                    @for (int i = 0; i < 25; i++)
+                    {
+                        var isMarked = previewMarked.Contains(i);
+                        var isCenter = i == 12;
+                        <div class="preview-square @(isMarked ? "marked" : "") @(isCenter ? "center" : "")"
+                             @key="@($"preview-square-{i}")">
+                            <span class="square-emoji">@(isCenter ? "⚓" : GetRandomFishEmoji())</span>
+                            <span class="square-text">@(isCenter ? "FREE" : "Match")</span>
+                        </div>
+                    }
+                </div>
+                <div class="preview-indicator">
+                    <span class="indicator-text">Watch squares light up as you find matches!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Rules Section -->
+        <section class="rules-section">
+            <h2 class="section-title">Ready to Play?</h2>
+            <div class="rules-tabs">
+                <div class="tab-buttons">
+                    <button @onclick="() => SetActiveTab(0)"
+                            class="tab-button @(activeTab == 0 ? "active" : "")">
+                        How to Play
+                    </button>
+                    <button @onclick="() => SetActiveTab(1)"
+                            class="tab-button @(activeTab == 1 ? "active" : "")">
+                        What to Expect
+                    </button>
+                    <button @onclick="() => SetActiveTab(2)"
+                            class="tab-button @(activeTab == 2 ? "active" : "")">
+                        Pro Tips
+                    </button>
+                </div>
+                <div class="tab-content">
+                    @if (activeTab == 0)
+                    {
+                        <div class="tab-panel">
+                            <div class="rule-step">
+                                <span class="step-number">1</span>
+                                <div class="step-content">
+                                    <h3>Find Your Crew</h3>
+                                    <p>Look for team members who match the descriptions on your bingo card.</p>
+                                </div>
+                            </div>
+                            <div class="rule-step">
+                                <span class="step-number">2</span>
+                                <div class="step-content">
+                                    <h3>Mark Your Catches</h3>
+                                    <p>Tap squares when you find someone who fits the bill.</p>
+                                </div>
+                            </div>
+                            <div class="rule-step">
+                                <span class="step-number">3</span>
+                                <div class="step-content">
+                                    <h3>Claim Victory</h3>
+                                    <p>Get five in a row and shout "BINGO!" for the big win.</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (activeTab == 1)
+                    {
+                        <div class="tab-panel">
+                            <ul class="expectations-list">
+                                <li>🎣 <strong>25 Unique Challenges:</strong> From "speaks 3+ languages" to "has been skydiving"</li>
+                                <li>🌊 <strong>Ocean Adventure Theme:</strong> Immerse yourself in nautical fun</li>
+                                <li>⚡ <strong>Quick & Easy:</strong> Perfect icebreaker for meetings or social events</li>
+                                <li>📱 <strong>Mobile Friendly:</strong> Play on any device, anywhere</li>
+                                <li>🎉 <strong>Celebration Ready:</strong> Built-in victory animations and sounds</li>
+                            </ul>
+                        </div>
+                    }
+                    else if (activeTab == 2)
+                    {
+                        <div class="tab-panel">
+                            <div class="tips-grid">
+                                <div class="tip-card">
+                                    <span class="tip-icon">💡</span>
+                                    <h4>Start with Easy Ones</h4>
+                                    <p>Look for obvious matches first to build momentum.</p>
+                                </div>
+                                <div class="tip-card">
+                                    <span class="tip-icon">👥</span>
+                                    <h4>Team Up</h4>
+                                    <p>Work together to find matches faster.</p>
+                                </div>
+                                <div class="tip-card">
+                                    <span class="tip-icon">🎯</span>
+                                    <h4>Be Creative</h4>
+                                    <p>Some descriptions are subjective—have fun interpreting them!</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof Section -->
+        <section class="social-proof">
+            <div class="testimonial">
+                <blockquote class="testimonial-text">
+                    "Soc Ops turned our team meeting from awkward silence to genuine laughter.
+                    The fishing theme made it memorable and fun!"
+                </blockquote>
+                <cite class="testimonial-author">
+                    — Sarah Chen, Product Manager at TechFlow
+                </cite>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <p class="footer-text">Built for better team connections • Soc Ops 2024</p>
+        </footer>
     </div>
 </div>
 
 @code {
     [Parameter]
     public EventCallback OnStart { get; set; }
+
+    private int activeTab = 0;
+    private List<int> previewMarked = new() { 6, 7, 8, 11, 13, 16, 17, 18 };
+    private System.Timers.Timer? previewTimer;
+    private int previewIndex = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GameService.InitializeAsync();
+        StartPreviewAnimation();
+    }
+
+    private void StartPreviewAnimation()
+    {
+        previewTimer = new System.Timers.Timer(800);
+        previewTimer.Elapsed += (sender, e) =>
+        {
+            previewIndex = (previewIndex + 1) % previewMarked.Count;
+            InvokeAsync(StateHasChanged);
+        };
+        previewTimer.Start();
+    }
+
+    private void SetActiveTab(int tabIndex)
+    {
+        activeTab = tabIndex;
+    }
+
+    private string GetRandomFishEmoji()
+    {
+        var fish = new[] { "🐠", "🐟", "🦈", "🐙", "🦀", "🐡", "🦑" };
+        return fish[Random.Shared.Next(fish.Length)];
+    }
+
+    public void Dispose()
+    {
+        previewTimer?.Stop();
+        previewTimer?.Dispose();
+    }
 }
