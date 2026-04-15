@@ -1,0 +1,18 @@
+<div class="mode-selection">
+    <h1>Choose Your Game Mode</h1>
+    <div class="mode-buttons">
+        <button @onclick="() => OnModeSelected(GameMode.Bingo)" class="mode-button bingo-mode">
+            <h2>🎣 Bingo</h2>
+            <p>Get 5 in a row on your bingo card</p>
+        </button>
+        <button @onclick="() => OnModeSelected(GameMode.ScavengerHunt)" class="mode-button scavenger-mode">
+            <h2>🔍 Scavenger Hunt</h2>
+            <p>Check off all items on your list</p>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<GameMode> OnModeSelected { get; set; }
+}
