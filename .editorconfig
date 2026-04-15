@@ -1,0 +1,19 @@
+# EditorConfig for C# projects
+# https://editorconfig.org
+
+root = true
+
+[*.cs]
+# Unused variable/parameter checks
+dotnet_code_quality_unused_parameters = all:warning
+dotnet_diagnostic.IDE0051.severity = warning  # Remove unused private member
+dotnet_diagnostic.IDE0052.severity = warning  # Remove unread private member
+dotnet_diagnostic.IDE0059.severity = warning  # Unnecessary assignment
+dotnet_diagnostic.IDE0060.severity = warning  # Remove unused parameter
+
+# Async/await preferences
+csharp_style_prefer_async_over_sync = true:warning
+dotnet_diagnostic.CS1998.severity = warning   # Async method lacks await
+dotnet_diagnostic.CS4014.severity = warning   # Call not awaited
+
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion

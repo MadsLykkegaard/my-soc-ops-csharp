@@ -29,17 +29,17 @@ public class BingoGameService
         await LoadGameStateAsync();
     }
 
-    public void StartGame()
+    public async Task StartGame()
     {
         Board = BingoLogicService.GenerateBoard();
         WinningLine = null;
         CurrentGameState = GameState.Playing;
         ShowBingoModal = false;
-        _ = SaveGameStateAsync(); // Fire and forget
+        await SaveGameStateAsync();
         NotifyStateChanged();
     }
 
-    public void HandleSquareClick(int squareId)
+    public async Task HandleSquareClick(int squareId)
     {
         Board = BingoLogicService.ToggleSquare(Board, squareId);
 
@@ -55,17 +55,17 @@ public class BingoGameService
             }
         }
 
-        _ = SaveGameStateAsync(); // Fire and forget
+        await SaveGameStateAsync();
         NotifyStateChanged();
     }
 
-    public void ResetGame()
+    public async Task ResetGame()
     {
         CurrentGameState = GameState.Start;
         Board = new();
         WinningLine = null;
         ShowBingoModal = false;
-        _ = SaveGameStateAsync(); // Fire and forget
+        await SaveGameStateAsync();
         NotifyStateChanged();
     }
 
